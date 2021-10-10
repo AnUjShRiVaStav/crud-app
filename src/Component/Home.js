@@ -29,6 +29,25 @@ export default function Home() {
                 }
             })
     }
+
+    const handleDelete = async (user) => {
+        fetch("https://reqres.in/api/users", {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(
+                {
+                    name: user.first_name,
+                    job: user.email
+                })
+        }).then(res => res.json())
+            .then(res => {
+                console.log(res)
+                if (res) {
+                    getListofUsers()
+                }
+            })
+    }
+
     const getListofUsers = async () => {
         await fetch("https://reqres.in/api/unknown")
             .then(res => res.json())
@@ -67,7 +86,7 @@ export default function Home() {
                                     </td>
                                     <td>
                                         <Button variant="info" onCLick={() => handleEditReq(user)}>Edit</Button>
-                                        &nbsp;<Button variant="danger">Delete</Button>
+                                        &nbsp;<Button variant="danger" onClick={() => handleDelete(user)}>Delete</Button>
                                     </td>
                                 </tr>
                             )
