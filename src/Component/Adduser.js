@@ -72,6 +72,7 @@ function Adduser() {
                                     name="userName"
                                     value={userName}
                                     onChange={handleUserName}
+                                    autoComplete='off'
                                     placeholder="User Name" />
                             </Form.Group>
                             <Form.Group controlId="email">
@@ -80,6 +81,7 @@ function Adduser() {
                                     type="text"
                                     name="email"
                                     value={email}
+                                    autoComplete='off'
                                     onChange={handleUserEmail}
                                     placeholder="Email" />
                             </Form.Group>
