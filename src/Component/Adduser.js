@@ -6,8 +6,33 @@ function Adduser() {
     const [id, setId] = useState();
     const [userName, setUserName] = useState('');
     const [email, setEmail] = useState('');
+    useEffect(() => {
+        fetch("https://reqres.in/api/users?page=1").then(res => res.json).then(res => console.log(res))
+    }, [])
 
+    const saveData = () => {
+        fetch("https://reqres.in/api/users", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(
+                {
+                    name: userName,
+                    job: email
+                })
+        }).then(res => res.json())
+            .then(res => {
+                console.log(res)
+                if (res) {
+                    getListofUsers()
+                }
+            })
+    }
 
+    const getListofUsers = async () => {
+        await fetch("https://reqres.in/api/unknown")
+            .then(res => res.json())
+            .then(res => console.log(res))
+    }
 
     let pageTitle;
     if (id) {
@@ -18,12 +43,18 @@ function Adduser() {
 
         const handleSubmit = (e) => {
             e.preventDefault();
-            setUserName(userName);
+            // setUserName(userName);
         }
 
-        const handleChange = (e) => {
-            setUserName(e.current.value)
-            console.log(`name`, setUserName)
+        const handleUserName = (e) => {
+            const val = e.target.value
+            setUserName(val)
+            // console.log(`name`, setUserName)
+        }
+        const handleUserEmail = (e) => {
+            const val = e.target.value
+            setEmail(val)
+            // console.log(`name`, setUserName)
         }
 
 
@@ -40,7 +71,7 @@ function Adduser() {
                                     type="text"
                                     name="userName"
                                     value={userName}
-                                    onChange={handleChange}
+                                    onChange={handleUserName}
                                     placeholder="User Name" />
                             </Form.Group>
                             <Form.Group controlId="email">
@@ -49,12 +80,12 @@ function Adduser() {
                                     type="text"
                                     name="email"
                                     value={email}
-                                    onChange={handleChange}
+                                    onChange={handleUserEmail}
                                     placeholder="Email" />
                             </Form.Group>
                             <Form.Group>
                                 <Form.Control type="hidden" name="id" value={id} />
-                                <Button variant="success" type="submit">Add</Button>
+                                <Button variant="success" type="submit" onClick={() => saveData()}>Add</Button>
                             </Form.Group>
                         </Form>
                     </Col>

@@ -12,7 +12,28 @@ export default function Home() {
         const json = await res.json();
         setUsers(json.data);
     };
-
+    const handleEditReq = async (user) => {
+        fetch("https://reqres.in/api/users", {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(
+                {
+                    name: user.first_name,
+                    job: user.email
+                })
+        }).then(res => res.json())
+            .then(res => {
+                console.log(res)
+                if (res) {
+                    getListofUsers()
+                }
+            })
+    }
+    const getListofUsers = async () => {
+        await fetch("https://reqres.in/api/unknown")
+            .then(res => res.json())
+            .then(res => console.log(res))
+    }
     useEffect(() => {
         HTTP()
     }, [])
@@ -42,10 +63,10 @@ export default function Home() {
                                     </td>
                                     <td>{user.email}</td>
                                     <td>
-                                        <img key={user.avatar} src={user.avatar} style={{ borderRadius: '50%' }} />
+                                        <img key={user.avatar} src={user.avatar} style={{ borderRadius: '50%' }} alt='' />
                                     </td>
                                     <td>
-                                        <Button variant="info">Edit</Button>
+                                        <Button variant="info" onCLick={() => handleEditReq(user)}>Edit</Button>
                                         &nbsp;<Button variant="danger">Delete</Button>
                                     </td>
                                 </tr>
